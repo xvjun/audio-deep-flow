@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hdfs-manager-deployment
+  namespace: audio-deep-flow
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hdfs-manager-service
+  template:
+    metadata:
+      labels:
+        app: hdfs-manager-service
+    spec:
+      containers:
+        - name: hdfs-manager-service
+          image: registry.cn-hangzhou.aliyuncs.com/audio-deep-flow/hdfs-manager:1.0.0
+          imagePullPolicy: IfNotPresent
+          args:
+            - "--kafka.address=172.27.233.58"
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 1024M

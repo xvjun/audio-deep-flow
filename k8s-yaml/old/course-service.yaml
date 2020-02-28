@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: course-service
+  name: course-service
+  namespace: micro-service
+spec:
+  ports:
+  - port: 8084
+    protocol: TCP
+    targetPort: 8084
+  selector:
+    app: course-service
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: course-service-deployment
+  namespace: micro-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: course-service
+  template:
+    metadata:
+      labels:
+        app: course-service
+    spec:
+      containers:
+      - name: course-service
+        image: 172.27.160.10:8090/micro-service/course-service:latest
+        imagePullPolicy: Always
+        args:
+          - "--mysql.address=172.27.233.58"
+          - "--zookeeper.address=172.27.233.58"
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1024M
+        ports:
+        - containerPort: 20880
+      - name: course-edge-service
+        image: 172.27.160.10:8090/micro-service/course-edge-service:latest
+        imagePullPolicy: Always
+        args:
+          - "--zookeeper.address=172.27.233.58"
+          - "--zuul.service=172.27.233.58:30085"
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1024M
+        ports:
+        - containerPort: 8084
+      imagePullSecrets:
+        - name: mysecret
+

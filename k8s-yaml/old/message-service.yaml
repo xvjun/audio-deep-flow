@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: message-service
+  name: message-service
+  namespace: micro-service
+spec:
+  ports:
+  - port: 9090
+    protocol: TCP
+    targetPort: 9090
+  selector:
+    app: message-service
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: message-service-deployment
+  namespace: micro-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: message-service
+  template: 
+    metadata:
+      labels:
+        app: message-service
+    spec:
+      containers:
+      - name: message-service
+        image: 172.27.160.10:8090/micro-service/message-service:latest
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1024M
+        ports:
+        - containerPort: 9090
+      imagePullSecrets:
+        - name: mysecret
+

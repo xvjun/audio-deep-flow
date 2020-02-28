@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: api-gateway
+  name: api-gateway
+  namespace: micro-service
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8085
+    nodePort: 30085
+  selector:
+    app: api-gateway
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway-deployment
+  namespace: micro-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-gateway
+  template: 
+    metadata:
+      labels:
+        app: api-gateway
+    spec:
+      containers:
+      - name: api-gateway
+        image: 172.27.160.10:8090/micro-service/api-gateway-zuul:latest
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1024M
+        ports:
+        - containerPort: 8085
+          name: port1
+      imagePullSecrets:
+        - name: mysecret
+      
+
