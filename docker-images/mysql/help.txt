@@ -1,0 +1,22 @@
+通过Navicat连接mysql8.0以上版本，会报错
+问题：
+
+连接Docker启动的mysql出现：ERROR 2059 (HY000): Authentication plugin 'caching_sha2_password' cannot be loaded
+
+C:\mysqldata>mysql -h 127.0.0.1 -P 13306 -uroot -p
+Enter password: ****
+ERROR 2059 (HY000): Authentication plugin 'caching_sha2_password' cannot be loaded: ÕÒ²»µ½Ö¸¶¨µÄÄ£¿é¡£
+
+解决方案：
+
+1.进入mysql容器
+
+docker exec -it mysql2 /bin/bash
+
+2.进入mysql
+
+mysql -uroot -p
+
+3.修改密码
+
+ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '234520';

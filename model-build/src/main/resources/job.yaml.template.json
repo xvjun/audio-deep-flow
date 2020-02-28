@@ -1,0 +1,47 @@
+{
+  "apiVersion": "batch/v1",
+  "kind": "Job",
+  "metadata": {
+    "name": "{{jobName}}",
+    "namespace": "{{k8sNamespace}}"
+  },
+  "spec": {
+    "template": {
+      "spec": {
+        "restartPolicy": "Never",
+        "volumes": [
+          {
+            "name": "volume",
+            "hostPath": {
+              "path": "{{volume}}"
+            }
+          }
+        ],
+        "containers": [
+          {
+            "name": "{{jobName}}",
+            "image": "{{image}}",
+            "imagePullPolicy": "IfNotPresent",
+            "resources": {
+              "requests": {
+                "cpu": "{{cpu}}",
+                "memory": "{{memory}}"
+              },
+              "limits": {
+                "cpu": "{{cpu}}",
+                "memory": "{{memory}}"
+              }
+            },
+            "volumeMounts": [
+              {
+                "name": "volume",
+                "mountPath": "/app/model",
+                "readOnly": "true"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

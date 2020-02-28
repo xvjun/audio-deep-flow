@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.xujun.ADF</groupId>
+    <artifactId>audio-deep-flow</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>data-process</module>
+        <module>model-build</module>
+        <module>model-application</module>
+        <module>stream-data-predictor</module>
+        <module>monitor-service</module>
+        <module>api-gateway</module>
+        <module>common</module>
+        <module>hdfs-manager</module>
+    </modules>
+
+
+</project>
