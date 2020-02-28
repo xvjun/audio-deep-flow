@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/v1/modelbuild")
 public class ModelController {
@@ -30,9 +32,14 @@ public class ModelController {
     }
 
 
-    @GetMapping("/job/callback")
-    public Result jobCallBack() {
-//        modelService.kafkaJobCallBack();
+    @PostMapping("/job/callback")
+    public Result jobCallBack(@RequestBody Map<String, String> params) {
+        if(params.get("job_id").isEmpty()){
+            logger.error("job_id is not exist");
+            return Result.failure("job_id is not exist");
+        }else{
+            modelService.jobCallBack(Integer.parseInt(params.get("job_id")));
+        }
         return Result.success();
     }
 

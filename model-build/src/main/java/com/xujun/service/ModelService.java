@@ -71,6 +71,7 @@ public class ModelService {
      */
 
     public Result createModel(CreateModelRequest request){
+        // 创建各级目录
         String namespace = UuidUtils.createUUID();
         String basePath = Paths.get(localPath, namespace).toString();
         File basePathFile = new File(basePath);
@@ -130,7 +131,7 @@ public class ModelService {
             return Result.result(ResultCode.DATA_LIST_IS_NULL);
         }
 
-        // conf and output
+        // 准备conf文件的参数
         String conf = null;
         try {
             conf = Resources.toString(Resources.getResource("model.conf"), Charsets.UTF_8);
@@ -171,26 +172,11 @@ public class ModelService {
             confParams.put("class_sum", request.getClassSum());
         }
 
-        Jinjava jinjava = new Jinjava();
-        try{
-            String confPath = Paths.get(localPath, namespace, "model.conf").toString();
-            File confPathFile = new File(confPath);
-            if (!confPathFile.exists()) {
-                confPathFile.createNewFile();
-            }
-            String renderedTemplate = jinjava.render(conf, confParams);
-            FileWriter fileWritter = new FileWriter(confPathFile);
-            fileWritter.write(renderedTemplate);
-            fileWritter.close();
-            logger.info("Create model.conf successfully");
-        } catch (IOException e) {
-            e.printStackTrace();
-            logger.error("Create model.conf failed");
-            return Result.result(ResultCode.CREATE_MODEL_CONF_FAILED, e.getMessage());
-        }
 
 
-        //job
+
+
+        //准备job写入mysql的参数
         long ts = System.currentTimeMillis();
         String startTime = df.format(new Date(ts));
 
@@ -213,6 +199,8 @@ public class ModelService {
         jobInformation.setCpu(request.getCpu());
         jobInformation.setMemory(request.getMemory());
 
+
+
         // mysql
         int addCount = jobMapper.addJobInfomation(jobInformation);
         if(addCount > 0){
@@ -220,6 +208,26 @@ public class ModelService {
         }else{
             logger.error(String.format("Mysql jobInformation insert failed, dataInformation is [%s]", jobInformation));
             return Result.result(ResultCode.UPLOAD_MYSQL_FAILED);
+        }
+
+        // 写入conf文件
+        confParams.put("job_id",jobInformation.getJobId());
+        Jinjava jinjava = new Jinjava();
+        try{
+            String confPath = Paths.get(localPath, namespace, "model.conf").toString();
+            File confPathFile = new File(confPath);
+            if (!confPathFile.exists()) {
+                confPathFile.createNewFile();
+            }
+            String renderedTemplate = jinjava.render(conf, confParams);
+            FileWriter fileWritter = new FileWriter(confPathFile);
+            fileWritter.write(renderedTemplate);
+            fileWritter.close();
+            logger.info("Create model.conf successfully");
+        } catch (IOException e) {
+            e.printStackTrace();
+            logger.error("Create model.conf failed");
+            return Result.result(ResultCode.CREATE_MODEL_CONF_FAILED, e.getMessage());
         }
 
 
@@ -318,5 +326,10 @@ public class ModelService {
      * 2.获得history和tock
      * @return
      */
+
+    public Result jobCallBack(Integer job_id){
+        System.out.println(job_id);
+        return Result.success();
+    }
 
 }

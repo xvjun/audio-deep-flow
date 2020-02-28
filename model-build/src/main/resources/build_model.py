@@ -91,13 +91,11 @@ def save_time(time_path, time):
         f.write(str(time))
     f.close()
 
-def complete(response_url):
-    env_dist = os.environ
-    if(count % step == 0 or count == int(env_dist.get("PARTITION_FILES"))):
-        progress_url = env_dist.get("PROGRESS_URL")
-        data = {"completed": count}
-        headers = {"Content-Type": "application/json"}
-        requests.put(progress_url, json=data, headers=headers)
+def complete(progress_url, job_id):
+    data = {"job_id": job_id}
+    headers = {"Content-Type": "application/json"}
+    rs = requests.put(progress_url, json=data, headers=headers)
+    print(rs)
 
 
 
@@ -117,6 +115,8 @@ if __name__ == '__main__':
     class_sum = config.getint('tensorflow', 'class_sum')
     history_path = config.get('tensorflow', 'history_path')
     tock_path = config.get('tensorflow', 'tock_path')
+    progress_url = config.get('tensorflow', 'progress_url')
+    job_id = config.getint('tensorflow', 'job_id')
 
     print(data_path,type(data_path))
     print(hidden_layers,type(hidden_layers))
@@ -128,6 +128,7 @@ if __name__ == '__main__':
     print(class_sum,type(class_sum))
     print(history_path,type(history_path))
     print(tock_path,type(tock_path))
+    print(progress_url,type(progress_url))
 
     start_time = time.time()
 
@@ -149,4 +150,6 @@ if __name__ == '__main__':
     save_time(tock_path, end_time-start_time)
 
     tf.keras.models.save_model(model, save_path)
+
+    complete(progress_url, job_id)
 
