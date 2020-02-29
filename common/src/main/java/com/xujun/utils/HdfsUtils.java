@@ -23,8 +23,6 @@ public class HdfsUtils {
     public static void copyFileFromHdfs(String hdfsSrc, String localDst) throws Exception {
 
         FileSystem hdfsFileSystem = createFileSystemInstance(hdfsSrc);
-
-
         Path srcPath = new Path(hdfsSrc);
         Path dstPath = new Path(localDst);
         hdfsFileSystem.copyToLocalFile(false,srcPath, dstPath, true);

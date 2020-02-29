@@ -76,7 +76,7 @@ public class DataService {
             logger.error("Failed to write {}", filedst);
             return Result.result(ResultCode.UPLOAD_CODE_FAILED, e.getMessage());
         }
-        String hdfsFilePath = hdfsUrl + Paths.get(EnvConfig.HDFS_DIR).toString();
+        String hdfsFilePath = hdfsUrl + Paths.get(CommonEnvConfig.DATA_HDFS_DIR).toString();
         try {
             HdfsUtils.copyFromLocalFile(filedst, hdfsFilePath);
             logger.info(String.format("Write file to hdfs，save at [%s]", hdfsFilePath));
@@ -118,7 +118,7 @@ public class DataService {
         long ts = System.currentTimeMillis();
 
         String fileName = ts+"_"+HdfsUtils.getFileNameFromHdfsUrl(inputHdfsUrl);
-        String dstHdfsFilePath = hdfsUrl + Paths.get(EnvConfig.HDFS_DIR).toString();
+        String dstHdfsFilePath = hdfsUrl + Paths.get(CommonEnvConfig.DATA_HDFS_DIR).toString();
 
         String hdfsPath = dstHdfsFilePath+"/"+fileName;
         String importTime = df.format(new Date(ts));
@@ -206,9 +206,9 @@ public class DataService {
         }
         Integer delCount = dataMapper.deleteDataInformationByDataId(dataId);
         if(delCount > 0){
-            logger.info(String.format("Delete dataInformation id:[%s] successfully", delCount.toString()));
+            logger.info(String.format("Delete dataInformation id:[%s] successfully", dataId.toString()));
         }else{
-            logger.error(String.format("Delete dataInformation id:[%s] failed", delCount.toString()));
+            logger.error(String.format("Delete dataInformation id:[%s] failed", dataId.toString()));
             return Result.result(ResultCode.UPLOAD_MYSQL_FAILED);
         }
         return Result.success();

@@ -25,18 +25,17 @@
             "resources": {
               "requests": {
                 "cpu": "{{cpu}}",
-                "memory": "{{memory}}"
+                "memory": "{{memory}}M"
               },
               "limits": {
                 "cpu": "{{cpu}}",
-                "memory": "{{memory}}"
+                "memory": "{{memory}}M"
               }
             },
             "volumeMounts": [
               {
                 "name": "volume",
-                "mountPath": "/app/model",
-                "readOnly": "true"
+                "mountPath": "/app/model"
               }
             ]
           }

@@ -1,41 +1,41 @@
 package com.xujun.dao;
 
 
+import com.xujun.model.JobInformation;
+import com.xujun.model.ModelInformation;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+
 @Mapper
 @Repository
-public class ModelMapper {
+public interface ModelMapper {
 
+    @Insert("insert into modelInformation(modelName,hdfsPath,tock,lossStr,accuracyStr,valLossStr,valAccuracyStr," +
+            "accuracy,loss,valAccuracy,valLoss,completeTime,hiddenLayers,layersSize,learningRate,epochs,dropoutRate,classSum)" +
+            " value(#{modelName},#{hdfsPath},#{tock},#{lossStr},#{accuracyStr},#{valLossStr},#{valAccuracyStr}," +
+            "#{accuracy},#{loss},#{valAccuracy},#{valLoss},#{completeTime},#{hiddenLayers},#{layersSize}," +
+            "#{learningRate},#{epochs},#{dropoutRate},#{classSum})")
+    @SelectKey(statement = "select last_insert_id()" ,keyProperty = "modelId",keyColumn = "modelId",resultType = Integer.class,before = false)
+    Integer addModelInfomation(ModelInformation modelInformation);
 
+    @Update("update modelInformation set modelName=#{modelName},hdfsPath=#{hdfsPath}, tock=#{tock}, " +
+            "lossStr=#{lossStr},accuracyStr=#{accuracyStr},valLossStr=#{valLossStr},valAccuracyStr=#{valAccuracyStr}," +
+            "accuracy=#{accuracy},loss=#{loss},valAccuracy=#{valAccuracy},valLoss=#{valLoss}," +
+            "completeTime=#{completeTime},hiddenLayers=#{hiddenLayers},layersSize=#{layersSize},learningRate=#{learningRate}" +
+            ",epochs=#{epochs},dropoutRate=#{dropoutRate},classSum=#{classSum} where nodelId=#{modelId}")
+    Integer updateModelInfomationByModelId(ModelInformation modelInformation);
+
+    @Select("select * from modelInformation where modelId=#{modelId}")
+    ModelInformation selectModelInformationByModelId(@Param("modelId") Integer modelId);
+
+    @Select("select * from modelInformation where modelName like concat('%',#{modelName},'%')")
+    List<ModelInformation> selectModelInformationByModelNamePage(@Param("modelName") String modelName);
+
+    @Delete("delete from modelInformation where modelId=#{modelId}")
+    Integer deleteModelInformationByModelId(@Param("modelId") Integer modelId);
 
 
 }
-
-//    @Insert("insert into dataInformation(dataName,hdfsPath,length,capacity,importTime,isCompleted)" +
-//            " value(#{dataName},#{hdfsPath},#{length},#{capacity},#{importTime},#{isCompleted})")
-//    @SelectKey(statement = "select last_insert_id()" ,keyProperty = "dataId",keyColumn = "dataId",resultType = Integer.class,before = false)
-//    Integer addDataInfomation(DataInformation dataInformation);
-//
-//    @Update("update dataInformation set dataName=#{dataName}, length=#{length}, capacity=#{capacity}," +
-//            "importTime=#{importTime},isCompleted=#{isCompleted} where hdfsPath= #{hdfsPath}")
-//    Integer updateDataInfomationByHdfsUrl(DataInformation dataInformation);
-//
-//    @Update("update dataInformation set dataName=#{dataName},hdfsPath=#{hdfsPath}, length=#{length}, capacity=#{capacity}," +
-//            "importTime=#{importTime},isCompleted=#{isCompleted} where dataId=#{dataId}")
-//    Integer updateDataInfomationByDataId(DataInformation dataInformation);
-//
-//    @Select("select * from dataInformation")
-//    List<DataInformation> selectDataInformationAll();
-//
-//    @Select("select * from dataInformation where dataName like concat('%',#{name},'%')")
-//    List<DataInformation> selectDataInformationPage(String name);
-//
-//    @Select("select * from dataInformation where dataId=#{dataId}")
-//    DataInformation selectDataInformationByDataId(@Param("dataId") Integer dataId);
-//
-//    @Delete("delete from dataInformation where dataId=#{dataId}")
-//    Integer deleteDataInformationByDataId(@Param("dataId") Integer dataId);

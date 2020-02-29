@@ -19,8 +19,17 @@ public enum ResultCode {
     KAFKA_SEND_FAILED(309, "kafak send failed"),
     CREATE_MODEL_CONF_FAILED(310, "create model.conf failed"),
     CREATE_K8S_JOB_FAILED(311, "Failed to create k8s job"),
-    CREATE_FILE_FAILED(312, "Failed to create file"),
-    READ_FILE_FAILED(313, "Failed to read file"),
+    CREATE_K8S_SVC_FAILED(312, "Failed to create k8s svc"),
+    CREATE_K8S_DEPLOY_FAILED(313, "Failed to create k8s deploy"),
+    CREATE_FILE_FAILED(314, "Failed to create file"),
+    READ_FILE_FAILED(315, "Failed to read file"),
+    DELETE_JOB_FAILED(316, "Failed to delete job"),
+    DELETE_K8S_JOB_FAILED(317, "Failed to delete k8s job"),
+    DELETE_K8S_POD_FAILED(318, "Failed to delete k8s pod"),
+    DELETE_K8S_SVC_FAILED(319, "Failed to delete k8s svc"),
+    DELETE_K8S_DEPLOY_FAILED(320, "Failed to delete k8s deploy"),
+    DOWNLOAD_HDFS_FAILED(321, "Failed to download from hdfs"),
+    DELETE_FILE_FAILED(322, "Failed to delete file"),
     ;
 
     private Integer code;

@@ -13,18 +13,15 @@ import javax.annotation.Resource;
 
 @Component
 @Slf4j
-public class BuildModelSender {
+public class Sender {
 
-    private static Logger logger = LoggerFactory.getLogger(BuildModelSender.class);
+    private static Logger logger = LoggerFactory.getLogger(Sender.class);
 
     @Resource
     private KafkaTemplate<String, String> kafkaTemplate;
 
-    @Value("${spring.kafka.hdfs2model-topics}")
-    private String topics;
-
     //发送消息方法
-    public boolean send(Message message) {
+    public boolean send(String topics, Message message) {
         String messageJson = JSONObject.toJSONString(message);
         logger.info("message = {}", messageJson);
         try{

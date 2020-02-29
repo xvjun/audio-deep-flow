@@ -1,0 +1,68 @@
+{
+  "apiVersion": "apps/v1",
+  "kind": "Deployment",
+  "metadata": {
+    "name": "{{deployName}}",
+    "namespace": "{{k8sNamespace}}"
+  },
+  "spec": {
+    "replicas": "{{replicas}}",
+    "selector": {
+      "matchLabels": {
+        "app": "{{label}}"
+      }
+    },
+    "template": {
+      "metadata": {
+        "labels": {
+          "app": "{{label}}"
+        }
+      },
+      "spec": {
+        "volumes": [
+          {
+            "name": "model",
+            "hostPath": {
+              "path": "{{modelPath}}"
+            }
+          }
+        ],
+        "containers": [
+          {
+            "volumeMounts": [
+              {
+                "name": "model",
+                "mountPath": "/models/model"
+              }
+            ],
+            "name": "{{deployName}}",
+            "image": "{{image}}",
+            "imagePullPolicy": "IfNotPresent",
+            "resources": {
+              "limits": {
+                "cpu": "{{cpu}}",
+                "memory": "{{memory}}M"
+              }
+            },
+            "ports": [
+              {
+                "containerPort": 8501
+              }
+            ],
+            "env": [
+              {
+                "name": "MODEL_NAME",
+                "value": "model"
+              }
+            ]
+          }
+        ],
+        "imagePullSecrets": [
+          {
+            "name": "aliyunsecret"
+          }
+        ]
+      }
+    }
+  }
+}

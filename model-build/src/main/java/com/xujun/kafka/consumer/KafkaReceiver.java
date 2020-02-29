@@ -2,7 +2,7 @@ package com.xujun.kafka.consumer;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xujun.kafka.beans.Message;
-import com.xujun.service.ModelService;
+import com.xujun.service.JobService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
@@ -20,7 +20,7 @@ public class KafkaReceiver {
     private static Logger logger = LoggerFactory.getLogger(KafkaReceiver.class);
 
     @Autowired
-    ModelService modelService;
+    JobService jobService;
 
     @KafkaListener(topics = "${spring.kafka.receiver-topics}")
     public void listen(ConsumerRecord<?, ?> record) {
@@ -34,7 +34,7 @@ public class KafkaReceiver {
             logger.info("record = {}", record);
             logger.info("message = {}", message);
             Message messageInfo = JSONObject.parseObject(message.toString(), Message.class);
-            modelService.kafkaJobCallBack(messageInfo);
+            jobService.kafkaJobCallBack(messageInfo);
 
         }
 

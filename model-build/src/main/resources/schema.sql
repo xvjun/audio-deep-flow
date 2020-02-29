@@ -23,12 +23,24 @@ CREATE TABLE IF NOT EXISTS `jobInformation`(
 
 
 CREATE TABLE IF NOT EXISTS `modelInformation`(
-   `dataId` INT NOT NULL AUTO_INCREMENT,
-   `dataName` VARCHAR(128) NOT NULL,
+   `modelId` INT NOT NULL AUTO_INCREMENT,
+   `modelName` VARCHAR(128) NOT NULL,
    `hdfsPath` VARCHAR(128) NOT NULL,
-   `length` INT NOT NULL,
-   `capacity` INT NOT NULL,
-   `importTime` DATETIME NOT NULL,
-   `isCompleted` TINYINT NOT NULL,
-   PRIMARY KEY ( `dataId` )
+   `tock` INT NOT NULL,
+   `lossStr` TEXT NOT NULL,
+   `accuracyStr` TEXT NOT NULL,
+   `valLossStr` TEXT NOT NULL,
+   `valAccuracyStr` TEXT NOT NULL,
+   `accuracy` FLOAT NOT NULL,
+   `loss` FLOAT NOT NULL,
+   `valAccuracy` FLOAT NOT NULL,
+   `valLoss` FLOAT NOT NULL,
+   `completeTime` DATETIME NOT NULL,
+   `hiddenLayers` INT NOT NULL,
+   `layersSize` INT NOT NULL,
+   `learningRate` FLOAT NOT NULL,
+   `epochs` INT NOT NULL,
+   `dropoutRate` FLOAT NOT NULL,
+   `classSum` INT NOT NULL,
+   PRIMARY KEY ( `modelId` )
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;

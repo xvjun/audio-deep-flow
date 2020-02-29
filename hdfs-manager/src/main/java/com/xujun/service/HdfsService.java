@@ -3,6 +3,7 @@ package com.xujun.service;
 import com.xujun.config.CommonEnvConfig;
 import com.xujun.model.DataInformation;
 import com.xujun.model.JobInformation;
+import com.xujun.model.ServingInformation;
 import com.xujun.utils.FileUtils;
 import com.xujun.utils.HdfsUtils;
 import com.xujun.utils.UuidUtils;
@@ -75,5 +76,20 @@ public class HdfsService {
         jobInformation.setDataLength(jobInformation.getDataLength() + FileUtils.getLineNumber(dstFile));
         jobInformation.setDataShardReadySum(jobInformation.getDataShardReadySum() + 1);
         return jobInformation;
+    }
+
+    public ServingInformation servingAppHdfsToLocal(String src, String dst, ServingInformation servingInformation){
+        try {
+            HdfsUtils.copyFileFromHdfs(src,dst);
+            logger.info("hdfs model to local successfully");
+            servingInformation.setIsCompleted(CommonEnvConfig.IS_COMPLETED_RUNNING);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("hdfs model to local failed");
+            servingInformation.setIsCompleted(CommonEnvConfig.IS_COMPLETED_FAILED);
+            return servingInformation;
+        }
+
+        return servingInformation;
     }
 }

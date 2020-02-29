@@ -57,4 +57,17 @@ public class FileUtils {
             outputChannel.close();
         }
     }
+
+    public static String readTxtFile(File file) throws Exception {
+        StringBuffer stringBuffer = new StringBuffer();
+        InputStream inputStream= new FileInputStream(file);
+        BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+        String line;
+        while ((line = br.readLine()) != null) {
+            stringBuffer.append(line+"\n");
+        }
+        return stringBuffer.toString();
+    }
+
+
 }

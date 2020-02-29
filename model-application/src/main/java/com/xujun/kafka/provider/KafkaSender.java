@@ -13,14 +13,14 @@ import javax.annotation.Resource;
 
 @Component
 @Slf4j
-public class DataProcessSender {
+public class KafkaSender {
 
-    private static Logger logger = LoggerFactory.getLogger(DataProcessSender.class);
+    private static Logger logger = LoggerFactory.getLogger(KafkaSender.class);
 
     @Resource
     private KafkaTemplate<String, String> kafkaTemplate;
 
-    @Value("${spring.kafka.hdfs2data-topics}")
+    @Value("${spring.kafka.send-topics}")
     private String topics;
 
     //发送消息方法
