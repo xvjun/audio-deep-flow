@@ -1,0 +1,13 @@
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: audio-deep-flow-crb
+  namespace: audio-deep-flow
+subjects:
+  - kind: ServiceAccount
+    name: audio-deep-flow-sa
+    namespace: audio-deep-flow
+roleRef:
+  kind: ClusterRole
+  name: audio-deep-flow-cr
+  apiGroup: rbac.authorization.k8s.io

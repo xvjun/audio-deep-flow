@@ -30,6 +30,7 @@ spec:
       labels:
         app: build-model-service
     spec:
+      serviceAccountName: audio-deep-flow-sa
       containers:
         - name: build-model-service
           image: registry.cn-hangzhou.aliyuncs.com/audio-deep-flow/build-model:1.0.0
