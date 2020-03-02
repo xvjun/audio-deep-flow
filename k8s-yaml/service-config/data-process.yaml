@@ -2,48 +2,47 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: build-model-service
-  name: build-model-service
+    app: data-process-service
+  name: data-process-service
   namespace: audio-deep-flow
 spec:
   ports:
-    - port: 8182
+    - port: 8181
       protocol: TCP
-      targetPort: 8182
-      nodePort: 30082
+      targetPort: 8181
+      nodePort: 30081
   selector:
-    app: build-model-service
+    app: data-process-service
   type: NodePort
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: build-model-deployment
+  name: data-process-deployment
   namespace: audio-deep-flow
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: build-model-service
+      app: data-process-service
   template:
     metadata:
       labels:
-        app: build-model-service
+        app: data-process-service
     spec:
       containers:
-        - name: build-model-service
-          image: registry.cn-hangzhou.aliyuncs.com/audio-deep-flow/build-model:1.0.0
+        - name: data-process-service
+          image: registry.cn-hangzhou.aliyuncs.com/audio-deep-flow/data-process:1.0.0
           imagePullPolicy: IfNotPresent
           args:
             - "--mysql.address=172.27.233.58"
             - "--kafka.address=172.27.233.58"
-            - "--docker.address=registry.cn-hangzhou.aliyuncs.com/audio-deep-flow/"
           resources:
             limits:
               cpu: 1000m
               memory: 1024M
           ports:
-            - containerPort: 8182
+            - containerPort: 8181
       imagePullSecrets:
-          - name: aliyunsecret
+        - name: aliyunsecret
 
