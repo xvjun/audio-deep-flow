@@ -38,13 +38,20 @@ spec:
           args:
             - "--mysql.address=172.27.233.58"
             - "--kafka.address=172.27.233.58"
-            - "--docker.address=registry.cn-hangzhou.aliyuncs.com/audio-deep-flow/"
+            - "--docker.address=registry.cn-hangzhou.aliyuncs.com/audio-deep-flow"
           resources:
             limits:
               cpu: 1000m
               memory: 1024M
           ports:
             - containerPort: 8182
+          volumeMounts:
+            - mountPath: /data/nfs
+              name: nfs
+      volumes:
+        - name: nfs
+          hostPath:
+            path: /data/nfs
       imagePullSecrets:
           - name: aliyunsecret
 

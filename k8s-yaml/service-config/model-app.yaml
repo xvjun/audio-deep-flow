@@ -42,8 +42,15 @@ spec:
             limits:
               cpu: 1000m
               memory: 1024M
+          volumeMounts:
+            - mountPath: /data/nfs
+              name: nfs
           ports:
             - containerPort: 8183
+      volumes:
+        - name: nfs
+          hostPath:
+            path: /data/nfs
       imagePullSecrets:
         - name: aliyunsecret
 
