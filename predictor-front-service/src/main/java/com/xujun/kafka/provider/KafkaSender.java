@@ -1,7 +1,7 @@
 package com.xujun.kafka.provider;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xujun.kafka.beans.Message;
+import com.xujun.model.PredictorInformation;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +24,8 @@ public class KafkaSender {
     private String topics;
 
     //发送消息方法
-    public boolean send(Message message) {
-        String messageJson = JSONObject.toJSONString(message);
+    public boolean send(PredictorInformation predictorInformation) {
+        String messageJson = JSONObject.toJSONString(predictorInformation);
         logger.info("message = {}", messageJson);
         try{
             kafkaTemplate.send(topics, messageJson);

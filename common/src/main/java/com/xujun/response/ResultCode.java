@@ -30,6 +30,7 @@ public enum ResultCode {
     DELETE_K8S_DEPLOY_FAILED(320, "Failed to delete k8s deploy"),
     DOWNLOAD_HDFS_FAILED(321, "Failed to download from hdfs"),
     DELETE_FILE_FAILED(322, "Failed to delete file"),
+    PREDICTOR_FAILED(323, "Failed to predictor data"),
     ;
 
     private Integer code;

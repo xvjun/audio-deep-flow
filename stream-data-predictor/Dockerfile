@@ -1,6 +1,6 @@
 FROM java:8
 MAINTAINER xujun 15604288825@163.com
 
-COPY target/model-application-1.0-SNAPSHOT.jar /model-application.jar
+COPY target/stream-data-predictor-1.0-SNAPSHOT.jar /stream-data-predictor.jar
 
-ENTRYPOINT ["java", "-jar", "/model-application.jar"]
+ENTRYPOINT ["java", "-jar", "/stream-data-predictor.jar"]

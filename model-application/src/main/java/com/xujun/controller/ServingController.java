@@ -34,4 +34,11 @@ public class ServingController {
         return servingService.deleteServingById(servingId);
     }
 
+    @GetMapping("/serving/list/page")
+    public Result getServingPage(@RequestParam("displayName") String displayName,
+                               @RequestParam("offset") Integer offset,
+                               @RequestParam("limit") Integer limit){
+        return servingService.getServingPage(displayName, offset, limit);
+    }
+
 }

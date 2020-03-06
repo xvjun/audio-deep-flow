@@ -17,6 +17,7 @@
         <module>api-gateway</module>
         <module>common</module>
         <module>hdfs-manager</module>
+        <module>predictor-front-service</module>
     </modules>
 
 

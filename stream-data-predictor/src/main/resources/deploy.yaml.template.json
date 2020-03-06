@@ -19,24 +19,17 @@
         }
       },
       "spec": {
-        "volumes": [
-          {
-            "name": "model",
-            "hostPath": {
-              "path": "{{modelPath}}"
-            }
-          }
-        ],
         "containers": [
           {
-            "volumeMounts": [
-              {
-                "name": "model",
-                "mountPath": "/models/model"
-              }
-            ],
             "name": "{{deployName}}",
             "image": "{{image}}",
+            "args": [
+              "--mysql.address={{mysqlAddress}}",
+              "--kafka.address={{kafkaAddress}}",
+              "--kafka.receiverTopics={{receiverTopics}}",
+              "--kafka.sendTopics={{sendTopics}}",
+              "--predictor.url={{url}}"
+            ],
             "imagePullPolicy": "IfNotPresent",
             "resources": {
               "limits": {
@@ -46,13 +39,7 @@
             },
             "ports": [
               {
-                "containerPort": 8501
-              }
-            ],
-            "env": [
-              {
-                "name": "MODEL_NAME",
-                "value": "model"
+                "containerPort": 8280
               }
             ]
           }

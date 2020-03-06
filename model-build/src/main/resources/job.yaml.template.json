@@ -17,6 +17,11 @@
             }
           }
         ],
+        "imagePullSecrets": [
+          {
+            "name": "aliyunsecret"
+          }
+        ],
         "containers": [
           {
             "name": "{{jobName}}",

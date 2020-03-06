@@ -40,6 +40,7 @@ public class K8sService {
         Configuration.setDefaultApiClient(client);
         batchV1Api = new BatchV1Api();
         coreV1Api = new CoreV1Api();
+        appsV1Api = new AppsV1Api();
     }
 
     public V1Service getSvc(String svc) throws ApiException {

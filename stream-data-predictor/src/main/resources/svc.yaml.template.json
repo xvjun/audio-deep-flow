@@ -11,14 +11,15 @@
   "spec": {
     "ports": [
       {
-        "port": 8501,
+        "port": 8280,
         "protocol": "TCP",
-        "targetPort": 8501
+        "targetPort": 8280,
+        "nodePort": {{nodePort}}
       }
     ],
     "selector": {
       "app": "{{label}}"
     },
-    "type": "ClusterIP"
+    "type": "NodePort"
   }
 }

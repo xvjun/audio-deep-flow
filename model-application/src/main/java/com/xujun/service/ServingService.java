@@ -2,6 +2,8 @@ package com.xujun.service;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import com.hubspot.jinjava.Jinjava;
@@ -9,11 +11,13 @@ import com.xujun.config.CommonEnvConfig;
 import com.xujun.dao.ServingMapper;
 import com.xujun.kafka.beans.Message;
 import com.xujun.kafka.provider.KafkaSender;
+import com.xujun.model.ModelInformation;
 import com.xujun.model.ServingInformation;
 import com.xujun.model.req.CreateServingRequest;
 import com.xujun.response.Result;
 import com.xujun.response.ResultCode;
 import com.xujun.utils.HdfsUtils;
+import com.xujun.utils.TarUtils;
 import com.xujun.utils.UuidUtils;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -29,6 +33,7 @@ import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -68,7 +73,8 @@ public class ServingService {
      */
     public Result createServing(CreateServingRequest request){
         String servingLocalPath = Paths.get(localPath, UuidUtils.createUUID()).toString();
-        String modelLocalPath = Paths.get(localPath, UuidUtils.createUUID(), "model").toString();
+        String modelLocalPath = Paths.get(servingLocalPath,
+                HdfsUtils.getFileNameFromHdfsUrl(request.getModelHdfsPath())).toString();
         File servingLocalPathFile = new File(servingLocalPath);
         if(!servingLocalPathFile.exists()){
             servingLocalPathFile.mkdirs();
@@ -138,13 +144,26 @@ public class ServingService {
             }
         }
 
+        String localTarPath = servingInformation.getModelLocalPath();
+        File localTarPathFile = new File(localTarPath);
+        try {
+            TarUtils.dearchive(localTarPathFile);
+            logger.info("model.tar dearchive successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("model.tar dearchive failed");
+            return Result.failure(e.getMessage());
+        }
+
+        String modelPath = Paths.get(localTarPathFile.getParent(), "model").toString();
+
+
         // k8s启动svc,deploy
         String label = servingInformation.getServingName();
         String svcName = servingInformation.getServingName();
 
         String deployName = servingInformation.getServingName();
         Integer replicas = servingInformation.getInstance();
-        String modelPath = servingInformation.getModelLocalPath();
         Float cpu = servingInformation.getCpu();
         Integer memory = servingInformation.getMemory();
 
@@ -158,6 +177,7 @@ public class ServingService {
         params.put("modelPath", modelPath);
         params.put("cpu", cpu);
         params.put("memory", memory);
+        params.put("image", image);
 
         Jinjava jinjava = new Jinjava();
         String svcTemplate = null;
@@ -203,7 +223,7 @@ public class ServingService {
         return Result.success();
     }
 
-//    删除k8s的deploy,svc，删除本地目录
+//    删除k8s的deploy,svc，删除本地目录,删除mysql
     public Result deleteServingById(Integer servingId){
         ServingInformation servingInformation = servingMapper.selectServingInformationByServingId(servingId);
         if(servingInformation != null){
@@ -230,15 +250,34 @@ public class ServingService {
         }
 
         String localPath = servingInformation.getModelLocalPath();
+        String localPathParent = new File(localPath).getParent();
         try {
-            FileUtils.deleteDirectory(new File(localPath));
+            FileUtils.deleteDirectory(new File(localPathParent));
             logger.info("delete local model successfully");
         } catch (IOException e) {
             e.printStackTrace();
             logger.info("delete local model failed");
             return Result.result(ResultCode.DELETE_FILE_FAILED);
         }
-
+        Integer delCount = servingMapper.deleteServingInformationByServingId(servingId);
+        if(delCount > 0){
+            logger.info(String.format("Delete ServingInformation id:[%s] successfully", servingId.toString()));
+        }else{
+            logger.error(String.format("Delete ServingInformation id:[%s] failed", servingId.toString()));
+            return Result.result(ResultCode.UPLOAD_MYSQL_FAILED);
+        }
         return Result.success();
+    }
+
+    public Result getServingPage(String name, Integer offset, Integer limit){
+        PageHelper.startPage(offset, limit, true);
+        List<ServingInformation> servingInformationList = servingMapper.selectServingInformationByServingNamePage(name);
+        PageInfo<ServingInformation> servingInformationPageInfo = new PageInfo<>(servingInformationList);
+        JSONObject rs = new JSONObject();
+        rs.put("list", servingInformationList);
+        rs.put("total", servingInformationPageInfo.getTotal());
+        rs.put("offset", offset);
+        rs.put("limit", limit);
+        return Result.success(rs);
     }
 }

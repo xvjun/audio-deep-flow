@@ -23,7 +23,19 @@
 -
 API geteway
 -
-
+kafka topic
+-
+  send-hdfsmanager
+  
+  hdfsmanager-send-dataprocess
+  
+  hdfsmanager-send-buildmodel
+  
+  hdfsmanager-send-servingapp
+  
+  default-send-predictor-front
+  
+  default-receiver-predictor-front
 
 
 

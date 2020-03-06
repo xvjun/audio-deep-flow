@@ -94,7 +94,7 @@ def save_time(time_path, time):
 def complete(progress_url, job_id):
     data = {"job_id": job_id}
     headers = {"Content-Type": "application/json"}
-    rs = requests.put(progress_url, json=data, headers=headers)
+    rs = requests.post(progress_url, json=data, headers=headers)
     print(rs)
 
 

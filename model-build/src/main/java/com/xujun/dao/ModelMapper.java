@@ -25,7 +25,7 @@ public interface ModelMapper {
             "lossStr=#{lossStr},accuracyStr=#{accuracyStr},valLossStr=#{valLossStr},valAccuracyStr=#{valAccuracyStr}," +
             "accuracy=#{accuracy},loss=#{loss},valAccuracy=#{valAccuracy},valLoss=#{valLoss}," +
             "completeTime=#{completeTime},hiddenLayers=#{hiddenLayers},layersSize=#{layersSize},learningRate=#{learningRate}" +
-            ",epochs=#{epochs},dropoutRate=#{dropoutRate},classSum=#{classSum} where nodelId=#{modelId}")
+            ",epochs=#{epochs},dropoutRate=#{dropoutRate},classSum=#{classSum} where modelId=#{modelId}")
     Integer updateModelInfomationByModelId(ModelInformation modelInformation);
 
     @Select("select * from modelInformation where modelId=#{modelId}")

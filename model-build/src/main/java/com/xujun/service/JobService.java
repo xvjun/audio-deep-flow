@@ -325,9 +325,9 @@ public class JobService {
         // mysql
         int updateCount = jobMapper.updateJobInfomationByJobId(jobInformation);
         if(updateCount > 0){
-            logger.warn("Mysql jobInformation update failed,update successfully");
+            logger.warn("Mysql jobInformation update successfully");
         }else{
-            logger.error(String.format("Mysql jobInformation update send failed, jobInformation is [%s]", jobInformation));
+            logger.error(String.format("Mysql jobInformation update failed, jobInformation is [%s]", jobInformation));
             return Result.result(ResultCode.UPLOAD_MYSQL_FAILED);
         }
 
