@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: stream-data-service
+  name: stream-data-service
+  namespace: audio-deep-flow
+spec:
+  ports:
+    - port: 8184
+      protocol: TCP
+      targetPort: 8184
+      nodePort: 30084
+  selector:
+    app: stream-data-service
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stream-data-deployment
+  namespace: audio-deep-flow
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stream-data-service
+  template:
+    metadata:
+      labels:
+        app: stream-data-service
+    spec:
+      serviceAccountName: audio-deep-flow-sa
+      containers:
+        - name: stream-data-service
+          image: registry.cn-hangzhou.aliyuncs.com/audio-deep-flow/stream-data-predictor:1.0.0
+          imagePullPolicy: IfNotPresent
+          args:
+            - "--mysql.address=172.27.233.58"
+            - "--docker.address=registry.cn-hangzhou.aliyuncs.com/audio-deep-flow"
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 1024M
+          ports:
+            - containerPort: 8183
+      imagePullSecrets:
+        - name: aliyunsecret
+
