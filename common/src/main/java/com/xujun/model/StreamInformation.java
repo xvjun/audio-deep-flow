@@ -21,6 +21,7 @@ public class StreamInformation {
     private String receiverTopics;
     private String sendTopics;
     private Integer nodePort;
+    private String httpAddress;
 
 }
 

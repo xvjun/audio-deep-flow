@@ -33,7 +33,7 @@ public class ModelController {
         return modelService.deleteModelById(modelId);
     }
 
-    @PostMapping("/model")
+    @GetMapping("/download/model")
     public Object downloadModeById(@RequestParam("modelId") Integer modelId){
 
         return modelService.downloadModelById(modelId);

@@ -12,14 +12,14 @@ import java.util.List;
 @Repository
 public interface StreamMapper {
 
-    @Insert("insert into streamInformation(streamName,startTime,servingName,cpu,memory,instance,kafkaAddress,receiverTopics,sendTopics,nodePort)" +
-            " value(#{streamName},#{startTime},#{servingName},#{cpu},#{memory},#{instance},#{kafkaAddress},#{receiverTopics},#{sendTopics},#{nodePort})")
+    @Insert("insert into streamInformation(streamName,startTime,servingName,cpu,memory,instance,kafkaAddress,receiverTopics,sendTopics,nodePort,httpAddress)" +
+            " value(#{streamName},#{startTime},#{servingName},#{cpu},#{memory},#{instance},#{kafkaAddress},#{receiverTopics},#{sendTopics},#{nodePort},#{httpAddress})")
     @SelectKey(statement = "select last_insert_id()" ,keyProperty = "streamId",keyColumn = "streamId",resultType = Integer.class,before = false)
     Integer addStreamInfomation(StreamInformation streamInformation);
 
     @Update("update streamInformation set streamName=#{streamName},startTime=#{startTime}, servingName=#{servingName}, " +
             "cpu=#{cpu},memory=#{memory},instance=#{instance},kafkaAddress=#{kafkaAddress},receiverTopics=#{receiverTopics}," +
-            "sendTopics=#{sendTopics},nodePort=#{nodePort}" +
+            "sendTopics=#{sendTopics},nodePort=#{nodePort},httpAddress=#{httpAddress}" +
             " where streamId=#{streamId}")
     Integer updateStreamInfomationByStreamId(StreamInformation streamInformation);
 

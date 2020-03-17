@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS `streamInformation`(
    `receiverTopics` VARCHAR(128) NOT NULL,
    `sendTopics` VARCHAR(128) NOT NULL,
    `nodePort` INT NOT NULL,
+   `httpAddress` VARCHAR(128) NOT NULL,
    PRIMARY KEY ( `streamId` )
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

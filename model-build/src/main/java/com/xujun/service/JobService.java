@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.nio.file.Paths;
 import java.sql.Date;
+import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -243,7 +244,6 @@ public class JobService {
             logger.error("Create model.conf failed");
             return Result.result(ResultCode.CREATE_MODEL_CONF_FAILED, e.getMessage());
         }
-
 
         //kafka
         logger.info(String.format("dataList : %s", request.getDataHdfsPathList().toString()));

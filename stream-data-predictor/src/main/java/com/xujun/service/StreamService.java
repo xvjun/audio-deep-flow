@@ -48,6 +48,9 @@ public class StreamService {
     @Value("${mysql.address}")
     private String mysqlAddress;
 
+    @Value("${localhost}")
+    private String localhost;
+
     @Autowired
     private K8sService k8sService;
 
@@ -79,6 +82,7 @@ public class StreamService {
         streamInformation.setReceiverTopics(request.getReceiverTopics());
         streamInformation.setSendTopics(request.getSendTopics());
         streamInformation.setNodePort(request.getNodePort());
+        streamInformation.setHttpAddress("http://" + localhost + ":" + request.getNodePort() + "/api/v1/predictor/data");
 
         // k8s启动svc,deploy
 

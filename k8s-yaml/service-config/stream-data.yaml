@@ -38,12 +38,13 @@ spec:
           args:
             - "--mysql.address=172.27.233.58"
             - "--docker.address=registry.cn-hangzhou.aliyuncs.com/audio-deep-flow"
+            - "--localhost=172.27.233.58"
           resources:
             limits:
               cpu: 1000m
               memory: 1024M
           ports:
-            - containerPort: 8183
+            - containerPort: 8184
       imagePullSecrets:
         - name: aliyunsecret
 
