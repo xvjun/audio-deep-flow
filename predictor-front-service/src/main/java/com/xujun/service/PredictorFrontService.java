@@ -72,7 +72,7 @@ public class PredictorFrontService {
         String time = df.format(new Date(request.getTs()));
         PredictorInformation predictorInformation = new PredictorInformation();
         predictorInformation.setId(request.getId());
-        predictorInformation.setLocaltion(request.getLocation());
+        predictorInformation.setLocation(request.getLocation());
         predictorInformation.setTime(time);
         predictorInformation.setLabel(label);
 

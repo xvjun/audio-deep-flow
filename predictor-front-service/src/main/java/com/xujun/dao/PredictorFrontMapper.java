@@ -10,11 +10,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PredictorFrontMapper {
 
-    @Insert("insert into predictorInformation(id,localtion,time,label) " +
-            "value(#{id},#{localtion},#{time},#{label})")
+    @Insert("insert into predictorInformation(location,time,label) " +
+            "value(#{location},#{time},#{label})")
     Integer addPredictorInformation(PredictorInformation predictorInformation);
 
-    @Update("update predictorInformation set label=#{label} where" +
-            " id=#{id} and localtion=#{localtion} and time=#{time}")
-    Integer updatePredictorInformation(PredictorInformation predictorInformation);
 }

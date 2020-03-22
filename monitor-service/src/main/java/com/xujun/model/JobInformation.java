@@ -7,11 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PredictorInformation {
-
-    private String id;
-    private Integer location;
-    private String time;
-    private Integer label;
-
+public class JobInformation {
+    private String name;
+    private String createTime;
+    private String status;
+    private Long runTime;
 }

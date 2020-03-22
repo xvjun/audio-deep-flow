@@ -10,10 +10,9 @@ spec:
     - port: 8184
       protocol: TCP
       targetPort: 8184
-      nodePort: 30084
   selector:
     app: stream-data-service
-  type: NodePort
+  type: ClusterIP
 ---
 apiVersion: apps/v1
 kind: Deployment

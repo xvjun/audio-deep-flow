@@ -16,5 +16,3 @@ CREATE TABLE IF NOT EXISTS `streamInformation`(
    PRIMARY KEY ( `streamId` )
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
-

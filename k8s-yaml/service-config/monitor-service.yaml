@@ -2,54 +2,46 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: model-app-service
-  name: model-app-service
+    app: monitor-service
+  name: monitor-service
   namespace: audio-deep-flow
 spec:
   ports:
-    - port: 8183
+    - port: 8185
       protocol: TCP
-      targetPort: 8183
+      targetPort: 8185
   selector:
-    app: model-app-service
+    app: monitor-service
   type: ClusterIP
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: model-app-deployment
+  name: monitor-deployment
   namespace: audio-deep-flow
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: model-app-service
+      app: monitor-service
   template:
     metadata:
       labels:
-        app: model-app-service
+        app: monitor-service
     spec:
       serviceAccountName: audio-deep-flow-sa
       containers:
-        - name: model-app-service
-          image: registry.cn-hangzhou.aliyuncs.com/audio-deep-flow/model-app:1.0.0
+        - name: monitor-service
+          image: registry.cn-hangzhou.aliyuncs.com/audio-deep-flow/monitor-service:1.0.0
           imagePullPolicy: IfNotPresent
           args:
             - "--mysql.address=172.27.233.58"
-            - "--kafka.address=172.27.233.58"
           resources:
             limits:
               cpu: 1000m
               memory: 1024M
-          volumeMounts:
-            - mountPath: /data/nfs
-              name: nfs
           ports:
-            - containerPort: 8183
-      volumes:
-        - name: nfs
-          hostPath:
-            path: /data/nfs
+            - containerPort: 8185
       imagePullSecrets:
         - name: aliyunsecret
 

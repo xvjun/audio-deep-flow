@@ -31,6 +31,12 @@ public enum ResultCode {
     DOWNLOAD_HDFS_FAILED(321, "Failed to download from hdfs"),
     DELETE_FILE_FAILED(322, "Failed to delete file"),
     PREDICTOR_FAILED(323, "Failed to predictor data"),
+    NODEPORT_IS_EXIST(324, "node port is exist"),
+    GET_K8S_DEPLOY_LIST_FAILED(325, "Failed to get k8s deployment list"),
+    GET_K8S_JOB_LIST_FAILED(326, "Failed to get k8s job list"),
+    GET_K8S_POD_LIST_FAILED(327, "Failed to get k8s pod list"),
+    GET_K8S_SVC_LIST_FAILED(328, "Failed to get k8s svc list"),
+    FORMAT_DATE_FAILED(329, "Failed to format date"),
     ;
 
     private Integer code;

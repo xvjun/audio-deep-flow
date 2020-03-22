@@ -2,46 +2,45 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: data-process-service
-  name: data-process-service
+    app: api-gateway-service
+  name: api-gateway-service
   namespace: audio-deep-flow
 spec:
   ports:
-    - port: 8181
+    - port: 8186
       protocol: TCP
-      targetPort: 8181
+      targetPort: 8186
+      nodePort: 30086
   selector:
-    app: data-process-service
-  type: ClusterIP
+    app: api-gateway-service
+  type: NodePort
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: data-process-deployment
+  name: api-gateway-deployment
   namespace: audio-deep-flow
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: data-process-service
+      app: api-gateway-service
   template:
     metadata:
       labels:
-        app: data-process-service
+        app: api-gateway-service
     spec:
+      serviceAccountName: audio-deep-flow-sa
       containers:
-        - name: data-process-service
-          image: registry.cn-hangzhou.aliyuncs.com/audio-deep-flow/data-process:1.0.0
+        - name: api-gateway-service
+          image: registry.cn-hangzhou.aliyuncs.com/audio-deep-flow/api-gateway:1.0.0
           imagePullPolicy: IfNotPresent
-          args:
-            - "--mysql.address=172.27.233.58"
-            - "--kafka.address=172.27.233.58"
           resources:
             limits:
               cpu: 1000m
               memory: 1024M
           ports:
-            - containerPort: 8181
+            - containerPort: 8186
       imagePullSecrets:
         - name: aliyunsecret
 

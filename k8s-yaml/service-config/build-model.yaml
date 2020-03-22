@@ -10,10 +10,9 @@ spec:
     - port: 8182
       protocol: TCP
       targetPort: 8182
-      nodePort: 30082
   selector:
     app: build-model-service
-  type: NodePort
+  type: ClusterIP
 ---
 apiVersion: apps/v1
 kind: Deployment

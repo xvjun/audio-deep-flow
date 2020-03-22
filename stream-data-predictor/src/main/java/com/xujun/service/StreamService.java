@@ -63,11 +63,13 @@ public class StreamService {
 
         long ts = System.currentTimeMillis();
         String startTime = df.format(new Date(ts));
-
-        if(request.getReceiverTopics() == null){
+        if(request.getKafkaAddress() == null || request.getKafkaAddress().equals("")){
+            request.setKafkaAddress(localhost+":9092");
+        }
+        if(request.getReceiverTopics() == null || request.getReceiverTopics().equals("")){
             request.setReceiverTopics(StreamEnvConfig.DEFAULT_RECEIVER_TOPIC);
         }
-        if(request.getSendTopics() == null){
+        if(request.getSendTopics() == null || request.getSendTopics().equals("")){
             request.setSendTopics(StreamEnvConfig.DEFAULT_SEND_TOPIC);
         }
         StreamInformation streamInformation = new StreamInformation();
@@ -85,6 +87,14 @@ public class StreamService {
         streamInformation.setHttpAddress("http://" + localhost + ":" + request.getNodePort() + "/api/v1/predictor/data");
 
         // k8s启动svc,deploy
+
+        List<StreamInformation> streamInformationList = streamMapper.selectStreamInformationByStreamNamePage("");
+        for (StreamInformation information : streamInformationList) {
+            if(request.getNodePort().equals(information.getNodePort())){
+                logger.error("nodePort is exist");
+                return Result.result(ResultCode.NODEPORT_IS_EXIST);
+            }
+        }
 
         String label = streamInformation.getStreamName();
         String svcName = streamInformation.getStreamName();
