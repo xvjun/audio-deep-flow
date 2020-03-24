@@ -41,6 +41,9 @@ spec:
               memory: 1024M
           ports:
             - containerPort: 8090
+          env:
+            - name: proxy
+              value: http://172.27.233.58:30086
       imagePullSecrets:
         - name: aliyunsecret
 
