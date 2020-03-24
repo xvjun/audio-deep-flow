@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: front-service
+  name: front-service
+  namespace: audio-deep-flow
+spec:
+  ports:
+    - port: 8090
+      protocol: TCP
+      targetPort: 8090
+      nodePort: 30090
+  selector:
+    app: front-service
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: front-deployment
+  namespace: audio-deep-flow
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: front-service
+  template:
+    metadata:
+      labels:
+        app: front-service
+    spec:
+      serviceAccountName: audio-deep-flow-sa
+      containers:
+        - name: front-service
+          image: registry.cn-hangzhou.aliyuncs.com/audio-deep-flow/front:1.0.0
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 1024M
+          ports:
+            - containerPort: 8090
+      imagePullSecrets:
+        - name: aliyunsecret
+

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/modelapp")
 public class ServingController {
-
     private static Logger logger = LoggerFactory.getLogger(ServingController.class);
 
     @Autowired
