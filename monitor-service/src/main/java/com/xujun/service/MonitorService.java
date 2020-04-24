@@ -185,9 +185,19 @@ public class MonitorService {
             JobInformation jobInformation = new JobInformation();
             jobInformation.setName(item.getMetadata().getName());
             jobInformation.setCreateTime(df.format(item.getStatus().getStartTime().toDate()));
-            Long times = item.getStatus().getCompletionTime().toDate().getTime() - item.getStatus().getStartTime().toDate().getTime();
+
+            Long times = null;
+            if(item.getStatus().getActive() != null){
+                times = System.currentTimeMillis() - item.getStatus().getStartTime().toDate().getTime();
+
+            }else{
+                times = item.getStatus().getCompletionTime().toDate().getTime() - item.getStatus().getStartTime().toDate().getTime();
+
+            }
             jobInformation.setRunTime(times/1000);
-            if(item.getStatus().getSucceeded() >= 1){
+            if(item.getStatus().getSucceeded() == null){
+                jobInformation.setStatus(K8sEnvConfig.JOB_RUNNING_STATUS);
+            }else if(item.getStatus().getSucceeded() >= 1){
                 jobInformation.setStatus(K8sEnvConfig.JOB_SUCCESS_STATUS);
             }else{
                 jobInformation.setStatus(K8sEnvConfig.JOB_FAILED_STATUS);

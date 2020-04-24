@@ -55,3 +55,24 @@ https://blog.csdn.net/zz_aiytag/article/details/103874977/
 
 kubernetes从harbor拉取镜像没有权限解决方法
 https://blog.csdn.net/xukangkang1hao/article/details/80839834
+
+步骤
+-
+  步骤：
+  
+  1.各机器ssh免密
+  
+  2.安装docker和k8s
+  
+  3.所有机器添加阿里云的docker login
+  
+  4.运行mysql，zk，kafka
+  
+  5.在kafka内创建所有topic
+  
+  6.检查yaml中的参数并修改
+  
+  7.运行k apply -f .
+  
+  8.访问http://ip:30090
+  
